@@ -1,76 +1,50 @@
 <!DOCTYPE html>
 
-<Body>
-    <Head>
-        <meta charset="utf-8">
-        <title>LCD1602 конвертер</title>
-    </Head>
+<Head>
+    <meta charset="utf-8">
+    <title>LCD1602 конвертер</title>
+    <link rel="stylesheet" href="styles.css">
+</Head>
+
+<body>
+    <h1>Добро пожаловать в конвертер для LCD1602</h1>
+
+    <canvas id="lcd"></canvas>
     
-    <style>
-        h1 {
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-        }
+    <h2>Что вы хотите отобразить?</h2>
 
-        h2 {
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-        }
+    <p>Строка 1:</p>
+    
+    <br><input id="line1" type="text" rows="1" maxlength="16">
+    
+    <p>Строка 2</p>
 
-        h3 {
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-        }
+    <br><input id="line2" type="text" rows="1" maxlength="16">
 
-        p {
-            font-size: 25px;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-        }
+    <h2>Настройки отображения</h2>
+    
+    <h3> <label for="colors">Выберите цветовую схему</label></h3>
+    
+    <select name="color" id="colors">
+        <option value="Black">Чёрно-белый</option>
+        <option value="blue">Синий</option>
+        <option value="green">Зелёный</option>
+    </select>
+    
+    <h3><label for="scale">Выберите масштаб модели</label></h3>
+    
+    <select name="modaleScale" id="scale">
+        <option value="scale1">Размер 1</option>
+        <option value="scale2">Размер 2</option>
+        <option value="scale3">Размер 3</option>
+    </select>
 
-        input {
-            height: 30px;
-            width: 300px;
-            font-size: 25px;
-        }
-    </style>
-
-    <body>
-        <h1>Добро пожаловать в конвертер для LCD1602</h1>
-
-        <canvas id="lcd"></canvas>
-        
-        <h2>Что вы хотите отобразить?</h2>
-
-        <p>Строка 1:</p>
-        
-        <br><input id="line1" type="text" rows="1" maxlength="16">
-        
-        <p>Строка 2</p>
-
-        <br><input id="line2" type="text" rows="1" maxlength="16">
-
-        <h2>Настройки отображения</h2>
-        
-        <h3> <label for="colors">Выберите цветовую схему</label></h3>
-        
-        <select name="color" id="colors">
-            <option value="Black">Чёрно-белый</option>
-            <option value="blue">Синий</option>
-            <option value="green">Зелёный</option>
-        </select>
-        
-        <h3><label for="scale">Выберите масштаб модели</label></h3>
-        
-        <select name="modaleScale" id="scale">
-            <option value="scale1">Размер 1</option>
-            <option value="scale2">Размер 2</option>
-            <option value="scale3">Размер 3</option>
-        </select>
-
-        <p>
-        <button >Сохранить изображение</button>
-        
-        <button>Сохранить проект</button>
-        
-        <button>Загрузить проект</button>
-        </p>
-    </body>
-    <script src = 'main.js'></script>
-</Body>
+    <p>
+    <button >Сохранить изображение</button>
+    
+    <button>Сохранить проект</button>
+    
+    <button>Загрузить проект</button>
+    </p>
+    <script type = "module" src = "main.js"></script>
+</body>
