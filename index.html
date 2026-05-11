@@ -1,50 +1,80 @@
 <!DOCTYPE html>
-
-<Head>
+<html lang="ru">
+<head>
     <meta charset="utf-8">
-    <title>LCD1602 конвертер</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCD1602 Конвертер</title>
     <link rel="stylesheet" href="styles.css">
-</Head>
-
+</head>
 <body>
-    <h1>Добро пожаловать в конвертер для LCD1602</h1>
+    <div class="container">
+        <h1>Добро пожаловать в конвертер для LCD1602</h1>
 
-    <canvas id="lcd"></canvas>
-    
-    <h2>Что вы хотите отобразить?</h2>
+        <!-- Превью дисплея -->
+        <div class="preview-section">
+            <canvas id="lcd"></canvas>
+        </div>
 
-    <p>Строка 1:</p>
-    
-    <br><input id="line1" type="text" rows="1" maxlength="16">
-    
-    <p>Строка 2</p>
+        <!-- Ввод текста -->
+        <div class="input-section">
+            <h2>Что вы хотите отобразить?</h2>
+            
+            <div class="input-group">
+                <label for="line1">Строка 1:</label>
+                <input id="line1" type="text" maxlength="16" placeholder="Введите текст...">
+            </div>
+            
+            <div class="input-group">
+                <label for="line2">Строка 2:</label>
+                <input id="line2" type="text" maxlength="16" placeholder="Введите текст...">
+            </div>
+        </div>
 
-    <br><input id="line2" type="text" rows="1" maxlength="16">
+        <!-- Настройки -->
+        <div class="settings-section">
+            <h2>Настройки отображения</h2>
+            
+            <div class="setting-group">
+                <label for="colors">Цветовая схема:</label>
+                <select id="colors">
+                    <option value="green">Зелёный (оригинальный)</option>
+                    <option value="black">Чёрно-белый</option>
+                    <option value="blue">Синий</option>
+                </select>
+            </div>
+            
+            <div class="setting-group">
+                <label for="scale">Масштаб:</label>
+                <select id="scale">
+                    <option value="scale2">x2</option>
+                    <option value="scale1">x1</option>
+                    <option value="scale3">x3</option>
+                    <option value="scale4">x4</option>
+                    <option value="scale8">x8</option>
+                </select>
+            </div>
+            
+            <div class="setting-group">
+                <label>
+                    <input type="checkbox" id="showGrid" checked>
+                    Показывать сетку
+                </label>
+            </div>
+        </div>
 
-    <h2>Настройки отображения</h2>
-    
-    <h3> <label for="colors">Выберите цветовую схему</label></h3>
-    
-    <select name="color" id="colors">
-        <option value="Black">Чёрно-белый</option>
-        <option value="blue">Синий</option>
-        <option value="green">Зелёный</option>
-    </select>
-    
-    <h3><label for="scale">Выберите масштаб модели</label></h3>
-    
-    <select name="modaleScale" id="scale">
-        <option value="scale1">Размер 1</option>
-        <option value="scale2">Размер 2</option>
-        <option value="scale3">Размер 3</option>
-    </select>
+        <!-- Кнопки действий -->
+        <div class="actions-section">
+            <button id="saveImageBtn" class="btn">💾 Сохранить изображение</button>
+            <button id="saveProjectBtn" class="btn">📁 Сохранить проект</button>
+            <button id="loadProjectBtn" class="btn">📂 Загрузить проект</button>
+        </div>
+        
+        <!-- Место для будущих секций -->
+        <div class="future-sections">
+            <!-- Здесь будут редактор символов и шрифтов -->
+        </div>
+    </div>
 
-    <p>
-    <button >Сохранить изображение</button>
-    
-    <button>Сохранить проект</button>
-    
-    <button>Загрузить проект</button>
-    </p>
-    <script type = "module" src = "main.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
+</html>
