@@ -63,7 +63,7 @@ public:
     Q_INVOKABLE void saveProject(const QUrl &url);
     Q_INVOKABLE void loadProject(const QUrl &url);
     Q_INVOKABLE void saveFont(const QUrl &url);
-    Q_INVOKABLE void loadFont(const QUrl &url);
+    Q_INVOKABLE bool loadFont(const QUrl &url);
     Q_INVOKABLE void exportPng(const QUrl &url);
     Q_INVOKABLE QString projectJson() const;
 

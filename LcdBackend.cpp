@@ -282,13 +282,13 @@ void LcdBackend::saveFont(const QUrl &url)
     writeTextFile(url, fontToBdf(), "Шрифт сохранен в BDF");
 }
 
-void LcdBackend::loadFont(const QUrl &url)
+bool LcdBackend::loadFont(const QUrl &url)
 {
     bool ok = false;
     const QString content = readTextFile(url, &ok);
     if (!ok) {
         setStatus("Не удалось открыть шрифт");
-        return;
+        return false;
     }
 
     if (content.trimmed().startsWith('{')) {
@@ -296,16 +296,17 @@ void LcdBackend::loadFont(const QUrl &url)
         const QJsonDocument document = QJsonDocument::fromJson(content.toUtf8(), &error);
         if (error.error != QJsonParseError::NoError || !document.isObject()) {
             setStatus("Не удалось прочитать JSON-шрифт");
-            return;
+            return false;
         }
         loadFontFromJson(document.object());
     } else if (!loadFontFromBdf(content)) {
         setStatus("Не удалось прочитать BDF-шрифт");
-        return;
+        return false;
     }
     setStatus("Шрифт загружен");
     emit fontChanged();
     emit displayChanged();
+    return true;
 }
 
 void LcdBackend::exportPng(const QUrl &url)
@@ -717,6 +718,10 @@ void LcdBackend::render(QPainter &painter, int scale, bool frame) const
 
 void LcdBackend::initializeFont()
 {
+    if (loadFont(QUrl::fromLocalFile("./fonts/lcd1602-5x8.bdf"))) {
+        return;
+    }
+
     m_font.insert(' ', blankMatrix());
     m_font.insert('A', makePattern({"01110", "10001", "10001", "11111", "10001", "10001", "10001", "00000"}));
     m_font.insert('B', makePattern({"11110", "10001", "10001", "11110", "10001", "10001", "11110", "00000"}));
