@@ -10,16 +10,21 @@ qt_standard_project_setup(REQUIRES 6.10)
 
 qt_add_executable(applcd1602_image_generator
     main.cpp
-    LcdBackend.cpp
-    LcdBackend.h
+    core/backend/LcdBackend.cpp
+    core/backend/LcdBackend.h
+)
+
+target_include_directories(applcd1602_image_generator
+    PRIVATE
+        core/backend
 )
 
 qt_add_qml_module(applcd1602_image_generator
     URI lcd1602_image_generator
     QML_FILES
-        Main.qml
-        LcdCharacter.qml
-        Lcd1602.qml
+        core/qml/Main.qml
+        core/qml/LcdCharacter.qml
+        core/qml/Lcd1602.qml
     RESOURCES
         fonts/lcd1602-5x8.bdf
 )
