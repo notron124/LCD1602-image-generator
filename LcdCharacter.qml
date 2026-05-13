@@ -68,6 +68,7 @@ Item {
         enabled: character.editable
         hoverEnabled: enabled
         acceptedButtons: Qt.LeftButton
+        preventStealing: true
 
         onPressed: (mouse) => {
             var index = character.pixelIndexAt(mouse.x, mouse.y)

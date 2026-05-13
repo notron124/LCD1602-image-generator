@@ -325,7 +325,7 @@ ApplicationWindow {
                                 onAccepted: {
                                     lcdBackend.ensureFontCharacters(text)
                                     if (text.length > 0)
-                                        root.selectedFontChar = text[0].toUpperCase()
+                                        root.selectedFontChar = text[0]
                                     text = ""
                                 }
                             }
@@ -334,7 +334,7 @@ ApplicationWindow {
                                 onClicked: {
                                     lcdBackend.ensureFontCharacters(addFontCharsField.text)
                                     if (addFontCharsField.text.length > 0)
-                                        root.selectedFontChar = addFontCharsField.text[0].toUpperCase()
+                                        root.selectedFontChar = addFontCharsField.text[0]
                                     addFontCharsField.text = ""
                                 }
                             }
