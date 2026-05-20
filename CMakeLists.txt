@@ -52,6 +52,8 @@ install(TARGETS applcd1602_image_generator
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
+install(DIRECTORY fonts DESTINATION bin)
+
 qt_generate_deploy_qml_app_script(
     TARGET applcd1602_image_generator
     OUTPUT_SCRIPT deploy_script
