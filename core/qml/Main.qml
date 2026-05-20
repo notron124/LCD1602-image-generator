@@ -20,6 +20,62 @@ ApplicationWindow {
     property int selectedColumn: 0
     property string selectedFontChar: "A"
 
+    function normalizedDisplayLine(row) {
+        var line = row === 0 ? lcdBackend.line1 : lcdBackend.line2
+        while (line.length < 16)
+            line += " "
+        return line.slice(0, 16)
+    }
+
+    function setDisplayLine(row, line) {
+        if (row === 0)
+            lcdBackend.line1 = line
+        else
+            lcdBackend.line2 = line
+    }
+
+    function replaceDisplayCharacter(row, column, character) {
+        var line = normalizedDisplayLine(row)
+        setDisplayLine(row, line.slice(0, column) + character + line.slice(column + 1))
+    }
+
+    function moveCursor(rowDelta, columnDelta) {
+        root.selectedRow = Math.max(0, Math.min(1, root.selectedRow + rowDelta))
+        root.selectedColumn = Math.max(0, Math.min(15, root.selectedColumn + columnDelta))
+    }
+
+    function advanceCursor() {
+        if (root.selectedColumn < 15) {
+            root.selectedColumn += 1
+        } else if (root.selectedRow === 0) {
+            root.selectedRow = 1
+            root.selectedColumn = 0
+        } else {
+            root.selectedColumn = 15
+        }
+    }
+
+    function retreatCursor() {
+        if (root.selectedColumn > 0) {
+            root.selectedColumn -= 1
+        } else if (root.selectedRow === 1) {
+            root.selectedRow = 0
+            root.selectedColumn = 15
+        }
+    }
+
+    function typeDisplayText(text) {
+        for (var index = 0; index < text.length; ++index) {
+            replaceDisplayCharacter(root.selectedRow, root.selectedColumn, text[index])
+            advanceCursor()
+        }
+    }
+
+    function backspaceDisplayText() {
+        replaceDisplayCharacter(root.selectedRow, root.selectedColumn, " ")
+        retreatCursor()
+    }
+
     Connections {
         target: lcdBackend
         function onCustomCharsChanged() { root.customRevision += 1 }
@@ -124,23 +180,23 @@ ApplicationWindow {
                         selectedRow: root.selectedRow
                         selectedColumn: root.selectedColumn
                         Layout.alignment: Qt.AlignHCenter
+                        Component.onCompleted: forceActiveFocus()
                         onCellClicked: (row, column) => {
                             root.selectedRow = row
                             root.selectedColumn = column
-                            if (row === 0) {
-                                line1Field.forceActiveFocus()
-                                line1Field.cursorPosition = column
-                            } else {
-                                line2Field.forceActiveFocus()
-                                line2Field.cursorPosition = column
-                            }
+                            forceActiveFocus()
                         }
+                        onTextEntered: (text) => root.typeDisplayText(text)
+                        onBackspacePressed: root.backspaceDisplayText()
+                        onDeletePressed: root.replaceDisplayCharacter(root.selectedRow, root.selectedColumn, " ")
+                        onMoveRequested: (rowDelta, columnDelta) => root.moveCursor(rowDelta, columnDelta)
                     }
 
                     GridLayout {
                         columns: 4
                         Layout.fillWidth: true
                         columnSpacing: 10
+                        visible: false
 
                         Label { text: "Строка 1" }
                         TextField {

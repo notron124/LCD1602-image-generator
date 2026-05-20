@@ -14,12 +14,46 @@ Rectangle {
     property bool showGrid: lcdBackend.showGrid
     property bool deviceFrame: lcdBackend.deviceFrame
     signal cellClicked(int row, int column)
+    signal textEntered(string text)
+    signal backspacePressed()
+    signal deletePressed()
+    signal moveRequested(int rowDelta, int columnDelta)
 
     implicitWidth: frame.width
     implicitHeight: frame.height
     width: implicitWidth
     height: implicitHeight
     color: "transparent"
+    focus: true
+    activeFocusOnTab: true
+
+    Keys.onPressed: (event) => {
+        if (event.key === Qt.Key_Backspace) {
+            lcd1602.backspacePressed()
+            event.accepted = true
+        } else if (event.key === Qt.Key_Delete) {
+            lcd1602.deletePressed()
+            event.accepted = true
+        } else if (event.key === Qt.Key_Left) {
+            lcd1602.moveRequested(0, -1)
+            event.accepted = true
+        } else if (event.key === Qt.Key_Right) {
+            lcd1602.moveRequested(0, 1)
+            event.accepted = true
+        } else if (event.key === Qt.Key_Up) {
+            lcd1602.moveRequested(-1, 0)
+            event.accepted = true
+        } else if (event.key === Qt.Key_Down) {
+            lcd1602.moveRequested(1, 0)
+            event.accepted = true
+        } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+            lcd1602.moveRequested(1, 0)
+            event.accepted = true
+        } else if (event.text.length > 0 && event.text >= " ") {
+            lcd1602.textEntered(event.text)
+            event.accepted = true
+        }
+    }
 
     Connections {
         target: lcdBackend
@@ -93,13 +127,24 @@ Rectangle {
                             pattern: lcdBackend.cellPattern(cell.index, lcd1602.revision)
                         }
 
-                        Rectangle {
+                        Item {
                             anchors.left: parent.left
-                            anchors.right: parent.right
                             anchors.bottom: parent.bottom
-                            height: Math.max(2, Math.floor(lcd1602.pixelSize / 2))
-                            color: lcd1602.pixelColor
+                            width: characterItem.width
+                            height: lcd1602.pixelSize
                             opacity: cell.selected && lcd1602.cursorVisible ? 1 : 0
+
+                            Repeater {
+                                model: 5
+
+                                Rectangle {
+                                    required property int index
+                                    x: index * (lcd1602.pixelSize + lcd1602.pixelSpacing)
+                                    width: lcd1602.pixelSize
+                                    height: lcd1602.pixelSize
+                                    color: lcd1602.pixelColor
+                                }
+                            }
                         }
 
                         MouseArea {
