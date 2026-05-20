@@ -137,13 +137,13 @@ void LcdBackend::setExportScale(int value)
 void LcdBackend::applyTheme(const QString &themeId)
 {
     if (themeId == "mono") {
-        m_backgroundColor = "#f5f5f5";
-        m_backlightColor = "#d8d8d8";
-        m_pixelColor = "#111111";
+        m_backgroundColor = "#f0f0f0";
+        m_backlightColor = "#ffffff";
+        m_pixelColor = "#000000";
     } else if (themeId == "blue") {
-        m_backgroundColor = "#07254f";
-        m_backlightColor = "#2567bf";
-        m_pixelColor = "#d8f0ff";
+        m_backgroundColor = "#005afa";
+        m_backlightColor = "#006efa";
+        m_pixelColor = "#e6f0ff";
     } else {
         m_backgroundColor = "#19381f";
         m_backlightColor = "#6ba842";
