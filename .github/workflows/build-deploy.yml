@@ -12,7 +12,6 @@ permissions:
   contents: write
 
 env:
-  QT_VERSION: "6.10.2"
   BUILD_TYPE: Release
   APP_NAME: applcd1602_image_generator
 
@@ -27,11 +26,13 @@ jobs:
         include:
           - name: Windows
             os: windows-latest
+            qt_version: "6.10.2"
             qt_arch: win64_mingw
             artifact_name: lcd1602-image-generator-windows
             archive_name: lcd1602-image-generator-windows.zip
           - name: Linux
             os: ubuntu-24.04
+            qt_version: "6.8.3"
             qt_arch: gcc_64
             artifact_name: lcd1602-image-generator-linux
             archive_name: lcd1602-image-generator-linux.tar.gz
@@ -60,7 +61,7 @@ jobs:
         if: runner.os == 'Windows'
         uses: jurplel/install-qt-action@v4
         with:
-          version: ${{ env.QT_VERSION }}
+          version: ${{ matrix.qt_version }}
           arch: ${{ matrix.qt_arch }}
           tools: tools_mingw1310,qt.tools.win64_mingw1310
           cache: true
@@ -69,7 +70,7 @@ jobs:
         if: runner.os == 'Linux'
         uses: jurplel/install-qt-action@v4
         with:
-          version: ${{ env.QT_VERSION }}
+          version: ${{ matrix.qt_version }}
           arch: ${{ matrix.qt_arch }}
           cache: true
 
