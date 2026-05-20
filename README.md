@@ -105,30 +105,4 @@ ENDCHAR
 }
 ```
 
-Внешние файлы шрифтов рекомендуется хранить отдельно в BDF. JSON-шрифты,
-созданные ранними версиями приложения, по-прежнему можно загрузить для
-совместимости.
-
-## Сборка для рабочего стола
-
-Команды выполняются из корня репозитория:
-
-```powershell
-cmake -S . -B build\desktop -G Ninja -DCMAKE_PREFIX_PATH=*path_to_qt_mingw_64*
-cmake --build build\desktop
-.\build\desktop\applcd1602_image_generator.exe
-```
-
-## Сборка WebAssembly
-
-Установите Qt WebAssembly kit той же версии Qt, затем сконфигурируйте проект
-с wasm-prefix. Пример:
-
-```powershell
-cmake -S . -B build\wasm -G Ninja -DCMAKE_PREFIX_PATH=*path_to_qt_wasm_singlethread*
-cmake --build build\wasm
-cmake --install build\wasm --prefix *path_to_project*
-```
-
-Каталог `build\pages` можно публиковать на GitHub Pages. Если wasm-kit в Qt
-установлен в каталог с другим именем, замените `wasm_singlethread` на свой путь.
+Внешние файлы шрифтов рекомендуется хранить отдельно в BDF.
