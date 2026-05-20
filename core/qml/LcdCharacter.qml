@@ -56,7 +56,7 @@ Item {
                 width: character.pixelSize
                 height: character.pixelSize
                 color: isActive ? character.activeColor : character.inactiveColor
-                border.width: character.showGrid ? 1 : 0
+                border.width: 0
                 border.color: character.gridColor
                 property bool isActive: character.isPixelActive(index)
             }
