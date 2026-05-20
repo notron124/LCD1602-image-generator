@@ -27,10 +27,12 @@ jobs:
         include:
           - name: Windows
             os: windows-latest
+            qt_arch: win64_mingw
             artifact_name: lcd1602-image-generator-windows
             archive_name: lcd1602-image-generator-windows.zip
           - name: Linux
             os: ubuntu-24.04
+            qt_arch: gcc_64
             artifact_name: lcd1602-image-generator-linux
             archive_name: lcd1602-image-generator-linux.tar.gz
 
@@ -54,13 +56,50 @@ jobs:
             libxcb-render-util0 \
             libxcb-xinerama0
 
-      - name: Install Qt
+      - name: Install Qt for Windows
+        if: runner.os == 'Windows'
         uses: jurplel/install-qt-action@v4
         with:
           version: ${{ env.QT_VERSION }}
+          arch: ${{ matrix.qt_arch }}
+          tools: tools_mingw1310,qt.tools.win64_mingw1310
           cache: true
 
-      - name: Configure
+      - name: Install Qt for Linux
+        if: runner.os == 'Linux'
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          arch: ${{ matrix.qt_arch }}
+          cache: true
+
+      - name: Add Qt MinGW to PATH
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $mingw = Join-Path $env:IQTA_TOOLS "mingw1310_64\bin"
+          $mingw | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          "CMAKE_C_COMPILER=$mingw\gcc.exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "CMAKE_CXX_COMPILER=$mingw\g++.exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Show toolchain
+        shell: bash
+        run: |
+          cmake --version
+          ninja --version
+          c++ --version
+
+      - name: Configure Windows
+        if: runner.os == 'Windows'
+        run: >
+          cmake -S . -B build
+          -G Ninja
+          -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+          -DCMAKE_C_COMPILER="${{ env.CMAKE_C_COMPILER }}"
+          -DCMAKE_CXX_COMPILER="${{ env.CMAKE_CXX_COMPILER }}"
+
+      - name: Configure Linux
+        if: runner.os == 'Linux'
         run: >
           cmake -S . -B build
           -G Ninja
